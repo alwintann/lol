@@ -28,6 +28,10 @@
             width: 90%;
         }
 
+        .container.login {
+            background-color: white;
+        }
+
         h1 {
             color: #ff4d6d;
             font-size: 2.5rem;
@@ -85,6 +89,35 @@
 
         .date-details.show {
             display: block;
+        }
+
+               /* Login page styles */
+               .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        input {
+            padding: 1rem;
+            border: 2px solid #ffccd5;
+            border-radius: 25px;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #ff4d6d;
+        }
+
+        .error-message {
+            color: #ff4d6d;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
         }
 
         .proposal {
@@ -151,7 +184,20 @@
 </head>
 <body>
     <div class="container">
-        <div id="proposalPage" class="proposal">
+
+        <div id="loginPage" class="login">
+            <div class="heart">🔒</div>
+            <h1>For Faye's eyes Only</h1>
+            <div class="login-form">
+                <input type="password" id="passwordInput" placeholder="Enter password" />
+                <button class="btn" onclick="checkPassword()">Enter</button>
+                <div id="errorMessage" class="error-message">
+                    Incorrect password. Try again!
+                </div>
+            </div>
+        </div>
+
+        <div id="proposalPage" class="proposal" style="display: none;">
             <div class="heart">❤️</div>
             <h1>Will you be my Valentine?</h1>
             <div class="buttons">
@@ -188,6 +234,30 @@
     <script>
         let size = 1.2;
         let noCount = 0;
+         // Password checking function
+         function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (password === 'fayefayeisshort') {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('proposalPage').style.display = 'block';
+                createConfetti();
+            } else {
+                errorMessage.style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+                // Add event listener for Enter key
+                document.getElementById('passwordInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                checkPassword();
+            }
+        });
         
         function makeYesBigger() {
             const yesBtn = document.getElementById('yesBtn');
@@ -207,7 +277,7 @@
         }
 
         function showDateDetails() {
-            document.getElementById('proposalPage').classList.add('hide');
+            document.getElementById('proposalPage').style.display = 'none';
             document.getElementById('dateDetails').classList.add('show');
             document.getElementById('noCount').textContent = noCount;
             createConfetti();
